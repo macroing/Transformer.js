@@ -1,0 +1,26 @@
+{
+  "author": "Jörgen Lundgren",
+  "description": "A value transformer for JavaScript.",
+  "devDependencies": {
+    "vite": "^4.4.5"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/transformer.es.js",
+      "require": "./dist/transformer.umd.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "main": "./dist/transformer.umd.js",
+  "module": "./dist/transformer.es.js",
+  "name": "@macroing/transformer.js",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "type": "module",
+  "version": "0.9.0"
+}
