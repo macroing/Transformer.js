@@ -52,3 +52,27 @@ The `context` parameter of `valueTransformer` contains a few useful properties. 
 | `valueIndex`      | null or number        | The index for the current value. It may be null.          |
 | `valueKey`        | null or value         | The key for the current value. It may be null.            |
 | `valueOld`        | value                 | The old version of the current value.                     |
+
+The `equals` function compares two values for equality. It takes two parameters that may be of any type.
+
+```js
+const isEqual = equals({name: "John Doe"}, {name: "John Doe"});
+```
+
+The `transformArray` function takes three parameters. They are `array`, `arrayFilter` and `arrayTransformer`. It returns `array` or a transformed version of it.
+
+If `arrayFilter` is provided and it is a function, it is called for each element in a copy of `array`. It takes two parameters. They are the element in the array and its index. It returns a boolean that indicates whether the element should be kept or not.
+
+If `arrayTransformer` is provided and it is a function, it is called. It takes two parameters, both of which are arrays. The first contains a copy of `array`. It is the same copy that `arrayFilter` was provided. The second contains the elements that were discarded from the filtering process, if any.
+
+The `transformArray` function returns the original `array` if nothing was changed. It uses the `equals` function to compare the two arrays.
+
+
+
+The `transformObject` function takes three parameters. They are `object`, `objectFilter` and `objectTransformer`. It returns `object` or a transformed version of it.
+
+If `objectFilter` is provided and it is a function, it is called for each property in a copy of `object`. It takes two parameters. They are the property value in the object and its key. It returns a boolean that indicates whether the property value should be kept or not.
+
+If `objectTransformer` is provided and it is a function, it is called. It takes two parameters, both of which are objects. The first contains a copy of `object`. It is the same copy that `objectFilter` was provided. The second contains the property values that were discarded from the filtering process, if any.
+
+The `transformObject` function returns the original `object` if nothing was changed. It uses the `equals` function to compare the two objects.
