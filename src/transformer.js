@@ -43,7 +43,7 @@ function equals(a, b, configuration = { isOrderIgnoredForMap: true, isOrderIgnor
       return false;
     } else {
       for (let i = 0; i < a.length; i++) {
-        if (!equals(a[i], b[i])) {
+        if (!equals(a[i], b[i], configuration)) {
           return false;
         }
       }
@@ -84,8 +84,8 @@ function equals(a, b, configuration = { isOrderIgnoredForMap: true, isOrderIgnor
           let hasFoundKeyValuePair = false;
 
           for (let j = 0; j < bKeyValues.length; j++) {
-            if (equals(aKeyValues[i][0], bKeyValues[j][0])) {
-              if (!equals(aKeyValues[i][1], bKeyValues[j][1])) {
+            if (equals(aKeyValues[i][0], bKeyValues[j][0], configuration)) {
+              if (!equals(aKeyValues[i][1], bKeyValues[j][1], configuration)) {
                 return false;
               } else {
                 hasFoundKeyValuePair = true;
@@ -96,7 +96,7 @@ function equals(a, b, configuration = { isOrderIgnoredForMap: true, isOrderIgnor
           if (!hasFoundKeyValuePair) {
             return false;
           }
-        } else if (!equals(aKeyValues[i][0], bKeyValues[i][0]) || !equals(aKeyValues[i][1], bKeyValues[i][1])) {
+        } else if (!equals(aKeyValues[i][0], bKeyValues[i][0], configuration) || !equals(aKeyValues[i][1], bKeyValues[i][1], configuration)) {
           return false;
         }
       }
@@ -107,7 +107,7 @@ function equals(a, b, configuration = { isOrderIgnoredForMap: true, isOrderIgnor
     for (const [k, v] of Object.entries(a)) {
       if (!(k in b)) {
         return false;
-      } else if (!equals(v, b[k])) {
+      } else if (!equals(v, b[k], configuration)) {
         return false;
       }
     }
@@ -134,7 +134,7 @@ function equals(a, b, configuration = { isOrderIgnoredForMap: true, isOrderIgnor
     }
 
     for (let i = 0; i < aKeyValues.length; i++) {
-      if (!equals(aKeyValues[i][0], bKeyValues[i][0]) || !equals(aKeyValues[i][1], bKeyValues[i][1])) {
+      if (!equals(aKeyValues[i][0], bKeyValues[i][0], configuration) || !equals(aKeyValues[i][1], bKeyValues[i][1], configuration)) {
         return false;
       }
     }
