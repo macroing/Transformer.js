@@ -29,7 +29,7 @@ function createValueTransformerOptions(valueTransformerOptions, parent, valueInd
   };
 }
 
-function equals(a, b) {
+function equals(a, b, configuration = { isOrderIgnoredForMap: true, isOrderIgnoredForObject: true }) {
   if (typeof a !== "object" && typeof b !== "object") {
     return Object.is(a, b);
   } else if (a === null && b === null) {
@@ -54,9 +54,56 @@ function equals(a, b) {
     return false;
   } else if (Object.keys(a).length !== Object.keys(b).length) {
     return false;
-  } else if(a instanceof Date && b instanceof Date) {
+  } else if (a instanceof Date && b instanceof Date) {
     return a.getTime() === b.getTime();
-  } else {
+  } else if (a instanceof Map && b instanceof Map) {
+    if (a.size !== b.size) {
+      return false;
+    } else {
+      const aKeyValues = [];
+      const bKeyValues = [];
+
+      for (const [k, v] of a) {
+        if (!b.has(k)) {
+          return false;
+        } else {
+          aKeyValues.push([k, v]);
+        }
+      }
+
+      for (const [k, v] of b) {
+        if (!a.has(k)) {
+          return false;
+        } else {
+          bKeyValues.push([k, v]);
+        }
+      }
+
+      for (let i = 0; i < aKeyValues.length; i++) {
+        if (!configuration || configuration.isOrderIgnoredForMap) {
+          let hasFoundKeyValuePair = false;
+
+          for (let j = 0; j < bKeyValues.length; j++) {
+            if (equals(aKeyValues[i][0], bKeyValues[j][0])) {
+              if (!equals(aKeyValues[i][1], bKeyValues[j][1])) {
+                return false;
+              } else {
+                hasFoundKeyValuePair = true;
+              }
+            }
+          }
+
+          if (!hasFoundKeyValuePair) {
+            return false;
+          }
+        } else if (!equals(aKeyValues[i][0], bKeyValues[i][0]) || !equals(aKeyValues[i][1], bKeyValues[i][1])) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+  } else if (!configuration || configuration.isOrderIgnoredForObject) {
     for (const [k, v] of Object.entries(a)) {
       if (!(k in b)) {
         return false;
@@ -66,6 +113,31 @@ function equals(a, b) {
     }
 
     return true;
+  } else {
+    const aKeyValues = [];
+    const bKeyValues = [];
+
+    for (const [k, v] of Object.entries(a)) {
+      if (!(k in b)) {
+        return false;
+      } else {
+        aKeyValues.push([k, v]);
+      }
+    }
+
+    for (const [k, v] of Object.entries(b)) {
+      if (!(k in a)) {
+        return false;
+      } else {
+        bKeyValues.push([k, v]);
+      }
+    }
+
+    for (let i = 0; i < aKeyValues.length; i++) {
+      if (!equals(aKeyValues[i][0], bKeyValues[i][0]) || !equals(aKeyValues[i][1], bKeyValues[i][1])) {
+        return false;
+      }
+    }
   }
 }
 

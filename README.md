@@ -53,11 +53,19 @@ The `context` parameter of `valueTransformer` contains a few useful properties. 
 | `valueKey`        | null or value         | The key for the current value. It may be null.            |
 | `valueOld`        | value                 | The old version of the current value.                     |
 
-The `equals` function compares two values for equality. It takes two parameters that may be of any type.
+### The `equals` function
+
+The `equals` function compares two values for equality. It takes two or three parameters. The first two must be present and may be of any type.
+
+The third parameter is an optional configuration object. This object contains the properties `isOrderIgnoredForMap` and `isOrderIgnoredForObject`. Both properties are set to `true` by default.
+
+Special equality comparisons have been added for `Date` and `Map`. More of these may be added in the future. The `Set` data type has not been added for example.
 
 ```js
 const isEqual = equals({name: "John Doe"}, {name: "John Doe"});
 ```
+
+### The `transformArray` function
 
 The `transformArray` function takes three parameters. They are `array`, `arrayFilter` and `arrayTransformer`. It returns `array` or a transformed version of it.
 
@@ -67,7 +75,7 @@ If `arrayTransformer` is provided and it is a function, it is called. It takes t
 
 The `transformArray` function returns the original `array` if nothing was changed. It uses the `equals` function to compare the two arrays.
 
-
+### The `transformObject` function
 
 The `transformObject` function takes three parameters. They are `object`, `objectFilter` and `objectTransformer`. It returns `object` or a transformed version of it.
 
