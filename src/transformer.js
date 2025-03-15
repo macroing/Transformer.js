@@ -54,6 +54,8 @@ function equals(a, b) {
     return false;
   } else if (Object.keys(a).length !== Object.keys(b).length) {
     return false;
+  } else if(a instanceof Date && b instanceof Date) {
+    return a.getTime() === b.getTime();
   } else {
     for (const [k, v] of Object.entries(a)) {
       if (!(k in b)) {
